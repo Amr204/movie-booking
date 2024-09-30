@@ -1,0 +1,64 @@
+@font-face {
+	font-family: "althawra-fikra";
+	src: url("../fonts/althawra-fikra.ttf");
+}
+
+body {
+	direction: ltr;
+	font-family: "althawra-fikra";
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#header {
+	background-color: #003780;
+	color: #fff;
+	padding: 10px;
+}
+
+nav {
+	padding: 10px;
+	text-align: center;
+	font-size: 18px;
+	background-color: #0287d0;
+}
+
+nav a {
+	text-decoration: none;
+	margin-left: 10px;
+	padding: 10px;
+	color: #fff;
+}
+
+nav a:hover {
+	color: #000;
+}
+
+ul.list-group li.list-group-item {
+	cursor: pointer;
+}
+
+input,
+select {
+	margin: 5px 5px;
+}
+
+input:hover,
+select:hover {
+	background-color: #BDC3C7;
+	border: 1px #095379 dotted;
+}
+
+pre {
+	color: #dc3545;
+}
+
+#format {
+	color: #dc3545;
+}
+
+#footer {
+	background-color: #0057a0;
+	padding: 10px;
+}
