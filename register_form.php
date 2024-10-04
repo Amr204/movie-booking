@@ -84,19 +84,29 @@ $E_country = "";
             // echo "<script>alert( 'You must choease the country' )</script>";
         } 
 
-
-            else if(isset($_FILES['user_uplode']) && empty($_FILES['user_uplode']['tmp_name'])) {
-                $password2 = md5($_POST['user_password2']);
-                $sql = "insert into user(username,email,mobile,city,password)
-                values('$name','$email','$phone','$country','$password2')";
-                $result = mysqli_query($conn,$sql);
-                if(!$result){
-                    echo "Insert Error" . mysqli_error($conn);
-                }
-                 echo "<script>alert( 'You have registered successfully' )</script>";
-
-                mysqli_close($conn);
+          // new sqlInjection prevent .Amr
+        if (isset($_FILES['user_uplode']) && empty($_FILES['user_uplode']['tmp_name'])) { 
+            // Secure password hashing using password_hash() instead of md5
+            $password2 = password_hash($_POST['user_password2'], PASSWORD_DEFAULT);
+            
+            // Prepare an SQL statement to prevent SQL injection
+            $stmt = $conn->prepare("INSERT INTO user (username, email, mobile, city, password) VALUES (?, ?, ?, ?, ?)");
+            
+            // Bind the user inputs to the prepared statement (sssss = 5 strings)
+            $stmt->bind_param("sssss", $name, $email, $phone, $country, $password2);
+            
+            // Execute the statement
+            if ($stmt->execute()) {
+                echo "<script>alert('You have registered successfully')</script>";
+            } else {
+                echo "Insert Error: " . $conn->error;
             }
+            
+            // Close the prepared statement and connection
+            $stmt->close();
+            mysqli_close($conn);
+        }
+        
 
 
             else {
