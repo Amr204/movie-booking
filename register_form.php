@@ -109,22 +109,48 @@ $E_country = "";
         
 
 
-            else {
-                $folder ="./Uplode/";
-                $img = $_FILES['user_uplode']['name'];
-                $tmp = $_FILES['user_uplode']['tmp_name'];
-                $password2 = md5($_POST['user_password2']);
-                $sql = "insert into user(username,email,mobile,city,password,image)
-                values('$name','$email','$phone','$country','$password2','$img')";
-                $result = mysqli_query($conn,$sql);
-                if(!$result){
-                    echo "Insert Error" . mysqli_error($conn);
+        else { 
+            // Set the upload directory
+            $folder = "./Uplode/";
+        
+            // Get the uploaded file name and temporary file path
+            $img = $_FILES['user_uplode']['name'];
+            $tmp = $_FILES['user_uplode']['tmp_name'];
+        
+            // Secure password hashing using password_hash() instead of md5
+            $password2 = password_hash($_POST['user_password2'], PASSWORD_DEFAULT);
+        
+            // Perform some basic validation on the file type (optional)
+            $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+            $file_extension = pathinfo($img, PATHINFO_EXTENSION);
+            
+            if (in_array(strtolower($file_extension), $allowed_extensions)) {
+                // Prepare an SQL statement to prevent SQL injection
+                $stmt = $conn->prepare("INSERT INTO user (username, email, mobile, city, password, image) VALUES (?, ?, ?, ?, ?, ?)");
+                
+                // Bind the user inputs to the prepared statement
+                $stmt->bind_param("ssssss", $name, $email, $phone, $country, $password2, $img);
+                
+                // Execute the statement
+                if ($stmt->execute()) {
+                    // If the statement executes successfully, move the uploaded file to the target directory
+                    if (move_uploaded_file($tmp, $folder . $img)) {
+                        echo "<script>alert('You have successfully registered');</script>";
+                    } else {
+                        echo "File upload failed.";
+                    }
+                } else {
+                    echo "Insert Error: " . $conn->error;
                 }
-                move_uploaded_file($tmp,$folder.$img);
-                echo "<script>alert( 'You have successfully register' )</script>";
-
+        
+                // Close the prepared statement and the connection
+                $stmt->close();
                 mysqli_close($conn);
+            } else {
+                echo "Invalid file type. Please upload an image file (jpg, jpeg, png, gif).";
             }
+        }
+        
         }
         ?>
 
