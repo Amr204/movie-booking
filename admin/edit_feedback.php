@@ -29,8 +29,8 @@
         if(isset($_GET['feed'])){
         $id = $_GET['feed'];
         require_once('../config.php');
-        $sql = "select * from feedback where id = $id";
-        $exe = mysqli_query($conn, $sql);
+        $sql = "SELECT * FROM feedback WHERE id = ?";
+        $exe = mysqli_execute_query($conn, $sql, [$id]);
         if (!$exe) {
         die("Selected Erorr" . mysqli_error($conn));
         }
@@ -40,9 +40,9 @@
                 $name = $_POST['name'];
                 $email = $_POST['email'];
                 $massage = $_POST['massage'];
-                $sql = "UPDATE `feedback` SET `name` = '$name', `email` = '$email', 
-                `massage` = '$massage' WHERE `feedback`.`id` = $id";
-                $exe = mysqli_query($conn,$sql);
+                $sql = "UPDATE `feedback` SET `name` = '?', `email` = '?', 
+                `massage` = '?' WHERE `feedback`.`id` = ?";
+                $exe = mysqli_execute_query($conn,$sql, [$name, $email, $massage, $id]);
                 if(!$exe){
                     echo "Update Error" . mysqli_error($conn);
                 }

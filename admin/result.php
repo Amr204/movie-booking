@@ -50,14 +50,14 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                
-                  
-                    
+
+
+
 
                     <tbody id="product_list">
                         <?php
-                                      $value=$_GET['find'];
-                        include_once 'Database.php';
+                        $value = $_GET['find'];
+                        include_once 'config.php';
                         $result = mysqli_query($conn, "select * from user where username like '%$value%'  order by id desc");
                         if (mysqli_num_rows($result) > 0) {
                             while ($row = mysqli_fetch_array($result)) {
@@ -89,7 +89,7 @@
                                             class="btn btn-danger btn-sm" role="button">Delete user</a></td>
 
                                 </tr>
-                                <?php
+                        <?php
 
                             }
                         }

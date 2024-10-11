@@ -34,8 +34,8 @@
 if(isset($_GET['user'])){
     $id = $_GET['user'];
     require_once('../config.php');
-    $sql = "select * from user where id = $id";
-    $exe = mysqli_query($conn, $sql);
+    $sql = "select * from user where id = ?";
+    $exe = mysqli_execute_query($conn, $sql, [$id]);
     if (!$exe) {
     die("Selected Erorr" . mysqli_error($conn));
     }
@@ -77,10 +77,10 @@ echo $response;
 
 
 
-		$update_record=mysqli_query($conn, "UPDATE `user` SET `username` = '$edit_Username', `email` = '$edit_email', `mobile` = '$edit_mobile', `city` = '$edit_city',`password` = '$edit_password', `image` = '$image' WHERE `id` = '$e_id'"); 
+		$update_record=mysqli_execute_query($conn, "UPDATE `user` SET `username` = '?', `email` = '?', `mobile` = '?', `city` = '?',`password` = '?', `image` = '?' WHERE `id` = '?'", [$edit_Username, $edit_email, $edit_mobile, $edit_city, $edit_password, $image, $e_id]); 
 
 	if(!$update_record){
-	 	echo "unsuccesfull";
+	 	echo "unsuccessful";
 	}
 	else
 {

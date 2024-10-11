@@ -33,10 +33,10 @@
 if(isset($_GET['movie'])){
     $id = $_GET['movie'];
     require_once('../config.php');
-    $sql = "select * from add_movie where id = $id";
-    $exe = mysqli_query($conn, $sql);
+    $sql = "SELECT * FROM add_movie WHERE id = ?";
+    $exe = mysqli_execute_query($conn, $sql, [$id]);
     if (!$exe) {
-    die("Selected Erorr" . mysqli_error($conn));
+    die("Selected Error" . mysqli_error($conn));
     }
     $row = mysqli_fetch_assoc($exe);
 if(isset($_POST['edit_movie']))
@@ -79,7 +79,7 @@ echo $response;
 
 
 
-		$insert_record=mysqli_query($conn, "UPDATE `add_movie` SET `movie_name` = '$edit_movie_name', `directer` = '$edit_directer_name', `categroy` = '$edit_categroy', `language` = '$edit_language',`you_tube_link` = '$tailer',`action` = '$action',`decription` = '$decription', `show` = '$edit_show', `image` = '$image' WHERE `id` = '$e_id'"); 
+		$insert_record=mysqli_execute_query($conn, "UPDATE `add_movie` SET `movie_name` = '?', `directer` = '?', `categroy` = '?', `language` = '?',`you_tube_link` = '?',`action` = '?',`decription` = '?', `show` = '?', `image` = '?' WHERE `id` = '?'", [$edit_movie_name, $edit_directer_name, $edit_categroy, $edit_language, $tailer, $action, $decription, $edit_show, $image, $e_id]); 
 
 	if(!$insert_record){
 	 	echo "unsuccesfull";

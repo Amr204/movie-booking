@@ -50,7 +50,7 @@
           </thead>
           <tbody id="product_list">
             <?php
-            include_once 'Database.php';
+            include_once 'config.php';
             $result = mysqli_query($conn, "SELECT * FROM user");
 
             if (mysqli_num_rows($result) > 0) {
@@ -158,7 +158,7 @@
                     </div>
                   </div>
                 </div>
-                <?php
+            <?php
 
               }
             }
